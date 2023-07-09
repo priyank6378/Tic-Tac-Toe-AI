@@ -21,27 +21,6 @@ state = [
     [0, 0, 0]
 ]
 
-state_dict = {}
-for a in [X, O, tie]:
-    for b in [X, O, tie]:
-        for c in [X, O, tie]:
-            for d in [X, O, tie]:
-                for e in [X, O, tie]:
-                    for f in [X, O, tie]:
-                        for g in [X, O, tie]:
-                            for h in [X, O, tie]:
-                                for i in [X, O, tie]:
-                                    tmp_state = [
-                                        [a, b, c],
-                                        [d, e, f],
-                                        [g, h, i]
-                                    ]
-                                    state_dict[str(tmp_state)] = len(state_dict)
-
-minimax_values = []
-for i in range(len(state_dict)):
-    minimax_values.append(None)
-
 ############################################################
 
 
@@ -93,7 +72,6 @@ def minimax(state, depth, player):
             val = minimax(s, depth+1, O)
             s[i][j] = 0
             max_val = max(max_val , val)
-        minimax_values[state_dict[str(s)]] = max_val
 
         return max_val
     
@@ -106,7 +84,6 @@ def minimax(state, depth, player):
             val = minimax(s, depth+1, X)
             s[i][j] = 0
             min_val = min(min_val, val)
-        minimax_values[state_dict[str(s)]] = min_val
 
         return min_val
     
@@ -183,8 +160,6 @@ def play(begin_state, begin_player):
         print()
 
 ########################################################
-
-
 
 
 ########################### MAIN #############################
