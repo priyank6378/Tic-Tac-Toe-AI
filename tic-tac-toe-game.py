@@ -10,8 +10,8 @@ O = -100
 tie = 0
 
 player_dict = {
-    X : " X ",
-    O : " O ",
+    X : " X ", # ai
+    O : " O ", # user
     tie : " _ "
 }
 
@@ -128,41 +128,73 @@ def play(begin_state, begin_player):
     s = begin_state
     player = begin_player
     os.system("clear")
-    while winner(s) == 0:
-        
-        if player == X:         #user
-            while True:
-                print("YOUR TURN!")
-                i,j = input("Enter your move: ").split()
-                i,j = int(i), int(j)
-                if s[i][j] != 0:
-                    print("Enter the move for empty square! Try again.")
-                else :
-                    break
-            s[i][j] = X
-            player = O
-        else :                  #AI
-            os.system("clear")
-            # print("MY TURN!")
-            move = min_turn(s)
-            i,j = move[0], move[1]
-            s[i][j] = O
-            player = X
-        
+    print('-'*11)
+    for i in range(3):
+        print("|" , end='')
+        for j in range(3):
+            print(player_dict[s[i][j]], end='')
+        print("|")
         print('-'*11)
-        for i in range(3):
-            print("|" , end='')
-            for j in range(3):
-                print(player_dict[s[i][j]], end='')
-            print("|")
+    print()
+    print()
+    try:
+        while winner(s) == 0:
+            
+            if player == X:         #user
+                while True:
+                    print("YOUR TURN!")
+                    i,j = input("Enter your move (row col): ").strip().split()
+                    i,j = int(i), int(j)
+                    i -= 1
+                    j -= 1
+                    while (i not in range(3) or j not in range(3)):
+                        print("Invalid Move! Try again.")
+                        i,j = input("Enter your move (row col): ").strip().split()
+                        i,j = int(i), int(j)
+                        i -= 1
+                        j -= 1
+                    if s[i][j] != 0:
+                        print("Enter the move for empty square! Try again.")
+                    else :
+                        break
+                s[i][j] = X
+                player = O
+            else :                  #AI
+                os.system("clear")
+                # print("MY TURN!")
+                move = min_turn(s)
+                i,j = move[0], move[1]
+                s[i][j] = O
+                player = X
+            
             print('-'*11)
-        print()
-        print()
+            for i in range(3):
+                print("|" , end='')
+                for j in range(3):
+                    print(player_dict[s[i][j]], end='')
+                print("|")
+                print('-'*11)
+            print()
+            print()
+        
+    except KeyboardInterrupt:
+        print("Game Interrupted!")
+        exit(0)
 
 ########################################################
 
 
 ########################### MAIN #############################
 if __name__ == "__main__":
+    os.system('clear')
     print("You are the first player!")
+    p = input("Pick your Peice [x or o] : ").strip().upper()
+    while (p != 'X' and p != 'O'):
+        print("Invalid Choice! Try again.")
+        p = input("Pick your Peice [x or o] : ").strip().upper()
+    if p == 'O':
+        player_dict[X] = " O "
+        player_dict[O] = " X "
+    print("Press Enter to start the game!")
+    input()
     play(state, X)
